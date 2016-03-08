@@ -23,9 +23,14 @@ parsed_json_file = json.loads(json_file.text)
 while True:
     try:
         with master_db:
+            
             cursor_db = master_db.cursor()
-            cursor_db.execute('CREATE TABLE dbbikes_data(number INT, name TEXT, address TEXT, latitude REAL, longitude REAL, banking INT, bonus INT, status TEXT, contract_name TEXT, bike_stands INT, available_bike_stands INT, available_bikes INT, last_update REAL)')
-    
+            
+            try:
+                cursor_db.execute('CREATE TABLE dbbikes_data(number INT, name TEXT, address TEXT, latitude REAL, longitude REAL, banking INT, bonus INT, status TEXT, contract_name TEXT, bike_stands INT, available_bike_stands INT, available_bikes INT, last_update REAL)')
+            except:
+                pass
+            
             for line in range(len(parsed_json_file)):
                 number = parsed_json_file[line]['number']
                 number = int(number)
@@ -64,13 +69,7 @@ while True:
                 writedata('\n'.join(master_db.iterdump()))
                 
         sleep(5 * 60)
+
     except:
         print("NOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         sleep(5)
-
-        
-        
-        
-        
-        
-        
