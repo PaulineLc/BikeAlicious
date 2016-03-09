@@ -1,9 +1,3 @@
-'''
-Created on 8 Mar 2016
-
-@author: pauline
-'''
-
 import json
 import sqlite3 as lite
 from time import sleep
@@ -19,6 +13,31 @@ apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
 json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
 parsed_json_file = json.loads(json_file.text)
 
+def writedata(data, sql_file_name):
+        f = open(sql_file_name, 'w')
+        with f:
+            f.write(data)
+
+def neatify_coord(string):
+    neat_string = None
+    
+    for i in range(len(string)):
+        if not string[i].isnumeric():
+            neat_string = string[i+1:]
+        else:
+            break
+        
+    string = neat_string
+    
+    for i in range(len(string) - 1, 0, -1):
+        if not string[i].isnumeric():
+            neat_string = string[:i]
+        else:
+            break
+        
+    neat_string = float(neat_string)
+    return neat_string
+    
 
 while True:
     try:
@@ -28,8 +47,9 @@ while True:
             
             try:
                 cursor_db.execute('CREATE TABLE dbbikes_data(number INT, name TEXT, address TEXT, latitude REAL, longitude REAL, banking INT, bonus INT, status TEXT, contract_name TEXT, bike_stands INT, available_bike_stands INT, available_bikes INT, last_update REAL)')
-            except:
-                pass
+            except lite.OperationalError as e:
+                if e.message == "table dbbikes_data already exists":
+                    pass
             
             for line in range(len(parsed_json_file)):
                 number = parsed_json_file[line]['number']
@@ -39,12 +59,9 @@ while True:
                 coord = parsed_json_file[line]['position']
                 coord = str(coord).split(" ")
                 latitude = coord[1]
-                latitude = latitude.replace(",", "")
-                latitude = float(latitude)
+                latitude = neatify_coord(latitude)
                 longitude = coord[3]
-                longitude = longitude.replace("}", "")
-                longitude = longitude.replace("]", "")
-                longitude = float(longitude)
+                longitude = neatify_coord(longitude)
                 banking = parsed_json_file[line]['banking']
                 banking = int(banking)
                 bonus = parsed_json_file[line]['bonus']
@@ -60,14 +77,8 @@ while True:
                 last_update = parsed_json_file[line]['last_update']
                 last_update = float(last_update)
                 cursor_db.execute("INSERT INTO dbbikes_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" , (number, name, address, latitude, longitude, banking, bonus, status, contract_name, bike_stands, available_bike_stands, available_bikes, last_update))
-    
-                def writedata(data):
-                    f = open('Test_masterdb.sql', 'w')
-                    with f:
-                        f.write(data)
                 
-                writedata('\n'.join(master_db.iterdump()))
-                
+        writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')        
         sleep(5 * 60)
 
     except:
