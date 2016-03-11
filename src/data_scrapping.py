@@ -42,10 +42,11 @@ def launch_database():
     
     while True:
         
-        json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
-        parsed_json_file = json.loads(json_file.text)
-        
         try:
+            
+            json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
+            parsed_json_file = json.loads(json_file.text)
+            
             with master_db:
                 
                 cursor_db = master_db.cursor()
