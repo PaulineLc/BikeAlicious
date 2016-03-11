@@ -36,19 +36,19 @@ def neatify_coord(string):
 def launch_database():
     master_db = lite.connect('dbike_masterDB_test.db')
 
-    name = "dublin"
-    stations = "https://api.jcdecaux.com/vls/v1/stations"
-    apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
-    
     while True:
+        
+        name = "dublin"
+        stations = "https://api.jcdecaux.com/vls/v1/stations"
+        apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
         
         try:
             
             json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
             parsed_json_file = json.loads(json_file.text)
-            
+
             with master_db:
-                
+
                 cursor_db = master_db.cursor()
                 
                 try:
@@ -56,7 +56,7 @@ def launch_database():
                 except lite.OperationalError as e:
                         if e == "table Test dbbikes_data exists":
                             pass
-                    
+                
                 for line in range(len(parsed_json_file)):
                     number = parsed_json_file[line]['number']
                     number = int(number)
@@ -84,8 +84,8 @@ def launch_database():
                     last_update = int(last_update)
                     cursor_db.execute("INSERT INTO dbbikes_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" , (number, name, address, latitude, longitude, banking, bonus, status, contract_name, bike_stands, available_bike_stands, available_bikes, last_update))
             
-            writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')        
-            sleep(5 * 60)
+            writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')
+            sleep(10)
     
         except:
             print(":-(")
