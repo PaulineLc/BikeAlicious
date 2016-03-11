@@ -35,16 +35,16 @@ def neatify_coord(string):
     
 def launch_database():
     master_db = lite.connect('dbike_masterDB_test.db')
+    
+    contract = "dublin"
+    stations = "https://api.jcdecaux.com/vls/v1/stations"
+    apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
 
     while True:
         
-        name = "dublin"
-        stations = "https://api.jcdecaux.com/vls/v1/stations"
-        apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
-        
         try:
             
-            json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
+            json_file = requests.get(stations, params={"apiKey": apikey, "contract" : contract})
             parsed_json_file = json.loads(json_file.text)
 
             with master_db:
