@@ -39,11 +39,12 @@ def launch_database():
     name = "dublin"
     stations = "https://api.jcdecaux.com/vls/v1/stations"
     apikey = "18115ec8d21d6ab03e40cf69eac0fc48e613f3bd"
-
-    json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
-    parsed_json_file = json.loads(json_file.text)
     
     while True:
+        
+        json_file = requests.get(stations, params={"apiKey": apikey, "contract" : name})
+        parsed_json_file = json.loads(json_file.text)
+        
         try:
             with master_db:
                 
