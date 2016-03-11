@@ -85,7 +85,7 @@ def launch_database():
                     cursor_db.execute("INSERT INTO dbbikes_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" , (number, name, address, latitude, longitude, banking, bonus, status, contract_name, bike_stands, available_bike_stands, available_bikes, last_update))
             
             writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')
-            sleep(10)
+            sleep(5 * 60)
     
         except:
             print(":-(")
