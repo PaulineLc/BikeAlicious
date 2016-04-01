@@ -46,6 +46,10 @@ def launch_database():
             
             json_file = requests.get(stations, params={"apiKey": apikey, "contract" : contract})
             parsed_json_file = json.loads(json_file.text)
+            
+            json__current_data = open('json_current_data.json', 'w')
+            json__current_data.write(json_file.text)
+            json__current_data.close()
 
             with master_db:
 
@@ -85,7 +89,7 @@ def launch_database():
                     cursor_db.execute("INSERT INTO dbbikes_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" , (number, name, address, latitude, longitude, banking, bonus, status, contract_name, bike_stands, available_bike_stands, available_bikes, last_update))
             
             writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')
-            sleep(5 * 60)
+            sleep(60 * 5)
     
         except:
             print(":-(")
