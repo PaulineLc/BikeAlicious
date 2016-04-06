@@ -73,6 +73,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                 }
             }
             rawFile.send(null);
+            console.log(JsonResponse)
             return JsonResponse;
         }
         
@@ -90,7 +91,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                         lng: dbBikesData[i]['position']['lng']
                     },
                     map: map,
-                    title: 'Hello World!'
+                    title: dbBikesData[i]['address'] + "; available bikes: " + dbBikesData[i]['available_bikes'] + "; empty stands: " + dbBikesData[i]['available_bike_stands']
                 });
             }
         }
