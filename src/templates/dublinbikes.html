@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Dublin Bikes Map</title>
+     <link rel = stylesheet type = "text/css"
+          href = "dublinbikes.css">
+</head>
+    
+<body>
+    <h1>Dublin Bikes</h1>
+ 
+<div id="userinput">
+    <form id="bikesinfo">
+        
+    Choose Your Station    
+    <input type=text name="location"><br><br>
+    <div class="dropdown">
+        <button class="dropbtn">I Want To</button>
+  <div id="myDropdown" class="dropdown-content">
+    <a href="">Get Bike</a>
+    <a href="">Return Bike</a>
+  </div>
+</div>
+    </form>
+</div>  
+    
+ <div id="stationmap"></div>   
+
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjYp9QUOCs&libraries=places">
+</script>     
+    
+<script>
+    var map;
+   function initializeMap() {
+     
+  var mapProp = {
+    center:new google.maps.LatLng(53.34535,-6.2708991),
+    zoom:13,
+    mapTypeId:google.maps.MapTypeId.ROADMAP
+  };
+ //create map object
+  map=new google.maps.Map(document.getElementById("stationmap"), mapProp);
+       
+       displayMarker();
+       
+//  var contentString = ;    
+       
+//  var infowindow = new google.maps.InfoWindow({
+//    content: contentString
+//  });
+}
+google.maps.event.addDomListener(window, 'load', initializeMap);
+    
+    myJsonFile = "json_current_data.json";
+        
+        var dbBikesData = readTextFile(myJsonFile);
+        
+        function readTextFile(file){
+            var rawFile = new XMLHttpRequest();
+            rawFile.open("GET", file, false);
+            var JsonResponse;
+            rawFile.onreadystatechange = function ()
+            {
+                if(rawFile.readyState === 4)
+                {
+                    if(rawFile.status === 200 || rawFile.status == 0)
+                    {
+                        var allText = rawFile.responseText;
+                        JsonResponse = parseJson(allText);
+                    }
+                }
+            }
+            rawFile.send(null);
+            console.log(JsonResponse)
+            return JsonResponse;
+        }
+        
+        //parse response from
+        function parseJson(response) {
+            var jsonResponse = JSON.parse(response);
+            return jsonResponse;
+        }
+        
+        function displayMarker(){
+            for (var i = 0; i < dbBikesData.length; i++){
+                var marker = new google.maps.Marker({
+                    position: {
+                        lat: dbBikesData[i]['position']['lat'],
+                        lng: dbBikesData[i]['position']['lng']
+                    },
+                    map: map,
+                    title: dbBikesData[i]['address'] + "; available bikes: " + dbBikesData[i]['available_bikes'] + "; empty stands: " + dbBikesData[i]['available_bike_stands']
+                });
+            }
+        }
+    
+        
+
+</script>    
+  
+<footer><br>
+    WOLD Enterprises
+</footer>    
+</body>
+
+
+</html>
