@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask import g
 import sqlite3
 
@@ -26,7 +26,7 @@ def hello():
     cur = get_db().cursor()
     for row in cur.execute("select * from dbbikes_data"):
         print(row)
-    return "Hellow World!"
+    return render_template('dublinbikes.html')
 
     
 @app.route("/station/<int:number>")
