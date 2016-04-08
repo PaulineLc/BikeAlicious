@@ -4,7 +4,7 @@
 <head>
     <title>Dublin Bikes Map</title>
      <link rel = stylesheet type = "text/css"
-          href = "dublinbikes.css">
+          href = "{{ url_for('static', filename='stylesheets/dublinbikes.css') }}">
 </head>
     
 <body>
@@ -53,7 +53,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
 }
 google.maps.event.addDomListener(window, 'load', initializeMap);
     
-    myJsonFile = "json_current_data.json";
+    myJsonFile = "{{ url_for('static', filename='json_current_data.json') }}";
         
         var dbBikesData = readTextFile(myJsonFile);
         
@@ -92,6 +92,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                     },
                     map: map,
                     title: dbBikesData[i]['address'] + "; available bikes: " + dbBikesData[i]['available_bikes'] + "; empty stands: " + dbBikesData[i]['available_bike_stands']
+                    
                 });
             }
         }
