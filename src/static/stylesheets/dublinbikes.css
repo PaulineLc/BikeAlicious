@@ -4,10 +4,17 @@ body{
     font-weight: 700;
 }
 
-h1{
+header{
     color: cadetblue;
     text-align: center;
+    text-shadow: 2px 2px 8px white;
+    height: 380px;
     font-size: 150px;
+    margin-bottom: 20px;
+    margin-bottom: 40px;
+    background-image: url(dsc_3050m.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
     
 }
 
