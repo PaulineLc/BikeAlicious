@@ -125,7 +125,6 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
 
 </script>    
   
-<div id='historic-data-tables' style='border:15px solid red'>Heree Here</div>
     
 <script>
     
@@ -145,6 +144,56 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
     var sat_data_freebikes;
     var sun_data_freebikes;
     
+    var freestands_at_00;
+    var freestands_at_01;
+    var freestands_at_02;
+    var freestands_at_03;
+    var freestands_at_04;
+    var freestands_at_05;
+    var freestands_at_06;
+    var freestands_at_07;
+    var freestands_at_08;
+    var freestands_at_09;
+    var freestands_at_10;
+    var freestands_at_11;
+    var freestands_at_12;
+    var freestands_at_13;
+    var freestands_at_14;
+    var freestands_at_15;
+    var freestands_at_16;
+    var freestands_at_17;
+    var freestands_at_18;
+    var freestands_at_19;
+    var freestands_at_20;
+    var freestands_at_21;
+    var freestands_at_22;
+    var freestands_at_23;
+    
+    var freebikes_at_00;
+    var freebikes_at_01;
+    var freebikes_at_02;
+    var freebikes_at_03;
+    var freebikes_at_04;
+    var freebikes_at_05;
+    var freebikes_at_06;
+    var freebikes_at_07;
+    var freebikes_at_08;
+    var freebikes_at_09;
+    var freebikes_at_10;
+    var freebikes_at_11;
+    var freebikes_at_12;
+    var freebikes_at_13;
+    var freebikes_at_14;
+    var freebikes_at_15;
+    var freebikes_at_16;
+    var freebikes_at_17;
+    var freebikes_at_18;
+    var freebikes_at_19;
+    var freebikes_at_20;
+    var freebikes_at_21;
+    var freebikes_at_22;
+    var freebikes_at_23;
+        
     function update_values(truc) {
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             $.getJSON($SCRIPT_ROOT+"/_station/"+truc,
@@ -165,16 +214,59 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                     sat_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sat;
                     sun_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sun;
                 
-                    for (var i in JSON.parse(data.occupancy)) {
-                        console.log(data.occupancy);
-                    }
+                    freestands_at_00 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['00']);
+                    freestands_at_01 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['01']);
+                    freestands_at_02 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['02']);
+                    freestands_at_03 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['03']);
+                    freestands_at_04 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['04']);
+                    freestands_at_05 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['05']);
+                    freestands_at_06 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['06']);
+                    freestands_at_07 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['07']);
+                    freestands_at_08 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['08']);
+                    freestands_at_09 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['09']);
+                    freestands_at_10 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['10']);
+                    freestands_at_11 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['11']);
+                    freestands_at_12 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['12']);
+                    freestands_at_13 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['13']);
+                    freestands_at_14 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['14']);
+                    freestands_at_15 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['15']);
+                    freestands_at_16 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['16']);
+                    freestands_at_17 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['17']);
+                    freestands_at_18 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['18']);
+                    freestands_at_19 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['19']);
+                    freestands_at_20 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['20']);
+                    freestands_at_21 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['21']);
+                    freestands_at_22 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['22']);
+                    freestands_at_23 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['23']);
                 
+                    freebikes_at_00 = parseFloat(JSON.parse(data.availability).available_bikes['00']);
+                    freebikes_at_01 = parseFloat(JSON.parse(data.availability).available_bikes['01']);
+                    freebikes_at_02 = parseFloat(JSON.parse(data.availability).available_bikes['02']);
+                    freebikes_at_03 = parseFloat(JSON.parse(data.availability).available_bikes['03']);
+                    freebikes_at_04 = parseFloat(JSON.parse(data.availability).available_bikes['04']);
+                    freebikes_at_05 = parseFloat(JSON.parse(data.availability).available_bikes['05']);
+                    freebikes_at_06 = parseFloat(JSON.parse(data.availability).available_bikes['06']);
+                    freebikes_at_07 = parseFloat(JSON.parse(data.availability).available_bikes['07']);
+                    freebikes_at_08 = parseFloat(JSON.parse(data.availability).available_bikes['08']);
+                    freebikes_at_09 = parseFloat(JSON.parse(data.availability).available_bikes['09']);
+                    freebikes_at_10 = parseFloat(JSON.parse(data.availability).available_bikes['10']);
+                    freebikes_at_11 = parseFloat(JSON.parse(data.availability).available_bikes['11']);
+                    freebikes_at_12 = parseFloat(JSON.parse(data.availability).available_bikes['12']);
+                    freebikes_at_13 = parseFloat(JSON.parse(data.availability).available_bikes['13']);
+                    freebikes_at_14 = parseFloat(JSON.parse(data.availability).available_bikes['14']);
+                    freebikes_at_15 = parseFloat(JSON.parse(data.availability).available_bikes['15']);
+                    freebikes_at_16 = parseFloat(JSON.parse(data.availability).available_bikes['16']);
+                    freebikes_at_17 = parseFloat(JSON.parse(data.availability).available_bikes['17']);
+                    freebikes_at_18 = parseFloat(JSON.parse(data.availability).available_bikes['18']);
+                    freebikes_at_19 = parseFloat(JSON.parse(data.availability).available_bikes['19']);
+                    freebikes_at_20 = parseFloat(JSON.parse(data.availability).available_bikes['20']);
+                    freebikes_at_21 = parseFloat(JSON.parse(data.availability).available_bikes['21']);
+                    freebikes_at_22 = parseFloat(JSON.parse(data.availability).available_bikes['22']);
+                    freebikes_at_23 = parseFloat(JSON.parse(data.availability).available_bikes['23']);
+                                    
                     drawChart();
-                    $("#historic-data-tables").html(
-                        data.occupancy + "<br>" +
-                        data.availability + "<br>" +
-                        data.mean_available_stands + "<br>" +
-                        data.mean_available_bikes + "<br>")
+                    drawChartHour();
+                
                 });
         }
 
@@ -182,6 +274,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <div id="curve_chart"></div>
+    <div id="curve_chart_hour"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -206,6 +299,47 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+        
+    function drawChartHour() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Hour', 'Available stands', 'Available bikes'],
+          ['00',  freestands_at_00, freebikes_at_00],
+          ['01',  freestands_at_01, freebikes_at_01],
+          ['02',  freestands_at_02, freebikes_at_02],
+          ['03',  freestands_at_03, freebikes_at_03],
+          ['04',  freestands_at_04, freebikes_at_04],
+          ['05',  freestands_at_05, freebikes_at_05],
+          ['06',  freestands_at_06, freebikes_at_06],
+          ['07',  freestands_at_07, freebikes_at_07],
+          ['08',  freestands_at_08, freebikes_at_08],
+          ['09',  freestands_at_09, freebikes_at_09],
+          ['10',  freestands_at_10, freebikes_at_10],
+          ['11',  freestands_at_11, freebikes_at_11],
+          ['12',  freestands_at_12, freebikes_at_12],
+          ['13',  freestands_at_13, freebikes_at_13],
+          ['14',  freestands_at_14, freebikes_at_14],
+          ['15',  freestands_at_15, freebikes_at_15],
+          ['16',  freestands_at_16, freebikes_at_16],
+          ['17',  freestands_at_17, freebikes_at_17],
+          ['18',  freestands_at_18, freebikes_at_18],
+          ['19',  freestands_at_19, freebikes_at_19],
+          ['20',  freestands_at_20, freebikes_at_20],
+          ['21',  freestands_at_21, freebikes_at_21],
+          ['22',  freestands_at_22, freebikes_at_22],
+          ['23',  freestands_at_23, freebikes_at_23]
+        ]);
+
+        var options = {
+          title: 'Weekly overview',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart_hour'));
 
         chart.draw(data, options);
       }
