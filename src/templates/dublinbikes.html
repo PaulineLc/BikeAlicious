@@ -93,6 +93,16 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
             var jsonResponse = JSON.parse(response);
             return jsonResponse;
         }
+    
+        function defineMarker(bikes, stands) {
+            if (bikes/stands >= 0.7) {
+                return "{{url_for('static', filename='greentriangle.png')}}"
+            } else if (bikes/stands >= 0.4) {
+                return "{{url_for('static', filename='yellowtriangle.png')}}"
+            } else {
+                return "{{url_for('static', filename='redtriangle.png')}}"
+            }
+        }
         
         function displayMarker(){
             //function which displays markers for each station
@@ -103,9 +113,11 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                         lng: dbBikesData[i]['position']['lng']
                     },
                     map: map,
-                    title: dbBikesData[i]['address'] + "; available bikes: " + dbBikesData[i]['available_bikes'] + "; empty stands: " + dbBikesData[i]['available_bike_stands'] 
+                    icon: defineMarker(dbBikesData[i]['available_bikes'], dbBikesData[i]['bike_stands']),
+                    title: dbBikesData[i]['address'] + "; available bikes: " + dbBikesData[i]['available_bikes'] + "; empty stands: " + dbBikesData[i]['available_bike_stands']
                 });
                 
+                //Don't touch this or I seriously throw you under the bus!
                 marker.metadata = {type: "point", id: dbBikesData[i]['number']};
                 marker.addListener('click', function(){update_values(this.metadata.id)});
             }
@@ -266,6 +278,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                                     
                     drawChart();
                     drawChartHour();
+                    drawChartHour3h()
                 
                 });
         }
@@ -275,6 +288,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <div id="curve_chart"></div>
     <div id="curve_chart_hour"></div>
+    <div id="curve_chart_hour3h"></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
@@ -334,12 +348,37 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
         ]);
 
         var options = {
-          title: 'Weekly overview',
+          title: 'Hourly overview',
           curveType: 'function',
           legend: { position: 'bottom' }
         };
 
         var chart = new google.visualization.LineChart(document.getElementById('curve_chart_hour'));
+
+        chart.draw(data, options);
+      }
+        
+    function drawChartHour3h() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Hour', 'Available stands', 'Available bikes'],
+          ['00',  freestands_at_00, freebikes_at_00],
+          ['03',  freestands_at_03, freebikes_at_03],
+          ['06',  freestands_at_06, freebikes_at_06],
+          ['09',  freestands_at_09, freebikes_at_09],
+          ['12',  freestands_at_12, freebikes_at_12],
+          ['15',  freestands_at_15, freebikes_at_15],
+          ['18',  freestands_at_18, freebikes_at_18],
+          ['21',  freestands_at_21, freebikes_at_21]
+        ]);
+
+        var options = {
+          title: '3 hour overview',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart_hour3h'));
 
         chart.draw(data, options);
       }
