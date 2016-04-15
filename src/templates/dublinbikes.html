@@ -125,14 +125,47 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
 
 </script>    
   
-<div id='historic-data-tables' style='border:15px solid red' onclick="update_values(24)">Heree Here</div>
+<div id='historic-data-tables' style='border:15px solid red'>Heree Here</div>
     
 <script>
-
+    
+    var mon_data_freestands;
+    var tue_data_freestands;
+    var wed_data_freestands;
+    var thu_data_freestands;
+    var fri_data_freestands;
+    var sat_data_freestands;
+    var sun_data_freestands;
+    
+    var mon_data_freebikes;
+    var tue_data_freebikes;
+    var wed_data_freebikes;
+    var thu_data_freebikes;
+    var fri_data_freebikes;
+    var sat_data_freebikes;
+    var sun_data_freebikes;
+    
     function update_values(truc) {
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             $.getJSON($SCRIPT_ROOT+"/_station/"+truc,
                 function(data) {
+                    mon_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Mon;
+                    tue_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Tue;
+                    wed_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Wed;
+                    thu_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Thurs;
+                    fri_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Fri;
+                    sat_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Sat;
+                    sun_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Sun;
+                    
+                    mon_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Mon;
+                    tue_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Tue;
+                    wed_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Wed;
+                    thu_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Thurs;
+                    fri_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Fri;
+                    sat_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sat;
+                    sun_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sun;
+                
+                    drawChart();
                     $("#historic-data-tables").html(
                         data.occupancy + "<br>" +
                         data.availability + "<br>" +
@@ -144,6 +177,36 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
     
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <div id="curve_chart"></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      //google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Weekday', 'Available stands', 'test'],
+          ['Monday',  mon_data_freestands, mon_data_freebikes],
+          ['Tuesday',  tue_data_freestands, tue_data_freebikes],
+          ['Wednesday',  wed_data_freestands, wed_data_freebikes],
+          ['Thursday',  thu_data_freestands, thu_data_freebikes],
+          ['Friday',  fri_data_freestands, fri_data_freebikes],
+          ['Saturday',  sat_data_freestands, sat_data_freebikes],
+          ['Sunday', sun_data_freestands, sun_data_freebikes]
+        ]);
+
+        var options = {
+          title: 'Available stands',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+        chart.draw(data, options);
+      }
+    </script>
+    
 <footer><br>
     WOLD Enterprises
 </footer>    
