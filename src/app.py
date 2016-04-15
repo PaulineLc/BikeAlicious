@@ -38,9 +38,13 @@ def get_station_info(station_id):
     df = pd.read_sql_query("select * from dbbikes_data where number = :number", conn, params={"number": station_id})
     df['last_update_date'] = pd.to_datetime(df.last_update, unit='ms')
     df.set_index('last_update_date', inplace=True)
-    sample = '1h'
-    occupancy = df['available_bike_stands'].resample(sample).mean()
-    availability = df['available_bikes'].resample(sample).mean()
+
+    hours = ['00','01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23']
+    df['update_hour'] = df.index.hour
+    occupancy = df[['available_bike_stands', 'update_hour']].groupby('update_hour').mean()
+    availability = df[['available_bikes', 'update_hour']].groupby('update_hour').mean()
+    availability.index = hours
+    occupancy.index = hours
 
     days = ['Mon', 'Tue', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
     df['weekday'] = df.index.weekday
