@@ -140,142 +140,45 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
     
 <script>
     
-    var mon_data_freestands;
-    var tue_data_freestands;
-    var wed_data_freestands;
-    var thu_data_freestands;
-    var fri_data_freestands;
-    var sat_data_freestands;
-    var sun_data_freestands;
-    
-    var mon_data_freebikes;
-    var tue_data_freebikes;
-    var wed_data_freebikes;
-    var thu_data_freebikes;
-    var fri_data_freebikes;
-    var sat_data_freebikes;
-    var sun_data_freebikes;
-    
-    var freestands_at_00;
-    var freestands_at_01;
-    var freestands_at_02;
-    var freestands_at_03;
-    var freestands_at_04;
-    var freestands_at_05;
-    var freestands_at_06;
-    var freestands_at_07;
-    var freestands_at_08;
-    var freestands_at_09;
-    var freestands_at_10;
-    var freestands_at_11;
-    var freestands_at_12;
-    var freestands_at_13;
-    var freestands_at_14;
-    var freestands_at_15;
-    var freestands_at_16;
-    var freestands_at_17;
-    var freestands_at_18;
-    var freestands_at_19;
-    var freestands_at_20;
-    var freestands_at_21;
-    var freestands_at_22;
-    var freestands_at_23;
-    
-    var freebikes_at_00;
-    var freebikes_at_01;
-    var freebikes_at_02;
-    var freebikes_at_03;
-    var freebikes_at_04;
-    var freebikes_at_05;
-    var freebikes_at_06;
-    var freebikes_at_07;
-    var freebikes_at_08;
-    var freebikes_at_09;
-    var freebikes_at_10;
-    var freebikes_at_11;
-    var freebikes_at_12;
-    var freebikes_at_13;
-    var freebikes_at_14;
-    var freebikes_at_15;
-    var freebikes_at_16;
-    var freebikes_at_17;
-    var freebikes_at_18;
-    var freebikes_at_19;
-    var freebikes_at_20;
-    var freebikes_at_21;
-    var freebikes_at_22;
-    var freebikes_at_23;
+    var weekly_data_array;
+    var hourly_data_array;
+    var hourly_data_array;
         
     function update_values(truc) {
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             $.getJSON($SCRIPT_ROOT+"/_station/"+truc,
                 function(data) {
-                    mon_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Mon;
-                    tue_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Tue;
-                    wed_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Wed;
-                    thu_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Thurs;
-                    fri_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Fri;
-                    sat_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Sat;
-                    sun_data_freestands = JSON.parse(data.mean_available_stands).available_bike_stands.Sun;
+                
+                    weekly_data_array = [['Weekday', 'Available stands', 'Available bikes']];
+                
+                    day_of_week = ["Mon", "Tue", "Wed", "Thurs", "Fri", "Sat", "Sun"]
                     
-                    mon_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Mon;
-                    tue_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Tue;
-                    wed_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Wed;
-                    thu_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Thurs;
-                    fri_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Fri;
-                    sat_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sat;
-                    sun_data_freebikes = JSON.parse(data.mean_available_bikes).available_bikes.Sun;
+                    for (var i in day_of_week) {
+                        var elem = [day_of_week[i],JSON.parse(data.mean_available_stands).available_bike_stands[day_of_week[i]],JSON.parse(data.mean_available_bikes).available_bikes[day_of_week[i]]];
+                        weekly_data_array.push(elem);
+                    }
                 
-                    freestands_at_00 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['00']);
-                    freestands_at_01 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['01']);
-                    freestands_at_02 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['02']);
-                    freestands_at_03 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['03']);
-                    freestands_at_04 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['04']);
-                    freestands_at_05 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['05']);
-                    freestands_at_06 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['06']);
-                    freestands_at_07 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['07']);
-                    freestands_at_08 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['08']);
-                    freestands_at_09 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['09']);
-                    freestands_at_10 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['10']);
-                    freestands_at_11 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['11']);
-                    freestands_at_12 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['12']);
-                    freestands_at_13 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['13']);
-                    freestands_at_14 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['14']);
-                    freestands_at_15 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['15']);
-                    freestands_at_16 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['16']);
-                    freestands_at_17 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['17']);
-                    freestands_at_18 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['18']);
-                    freestands_at_19 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['19']);
-                    freestands_at_20 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['20']);
-                    freestands_at_21 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['21']);
-                    freestands_at_22 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['22']);
-                    freestands_at_23 = parseFloat(JSON.parse(data.occupancy).available_bike_stands['23']);
+                    hourly_data_array = [['Hour', 'Available stands', 'Available bikes']]
+                        
+                    hours_of_day = ["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"];
                 
-                    freebikes_at_00 = parseFloat(JSON.parse(data.availability).available_bikes['00']);
-                    freebikes_at_01 = parseFloat(JSON.parse(data.availability).available_bikes['01']);
-                    freebikes_at_02 = parseFloat(JSON.parse(data.availability).available_bikes['02']);
-                    freebikes_at_03 = parseFloat(JSON.parse(data.availability).available_bikes['03']);
-                    freebikes_at_04 = parseFloat(JSON.parse(data.availability).available_bikes['04']);
-                    freebikes_at_05 = parseFloat(JSON.parse(data.availability).available_bikes['05']);
-                    freebikes_at_06 = parseFloat(JSON.parse(data.availability).available_bikes['06']);
-                    freebikes_at_07 = parseFloat(JSON.parse(data.availability).available_bikes['07']);
-                    freebikes_at_08 = parseFloat(JSON.parse(data.availability).available_bikes['08']);
-                    freebikes_at_09 = parseFloat(JSON.parse(data.availability).available_bikes['09']);
-                    freebikes_at_10 = parseFloat(JSON.parse(data.availability).available_bikes['10']);
-                    freebikes_at_11 = parseFloat(JSON.parse(data.availability).available_bikes['11']);
-                    freebikes_at_12 = parseFloat(JSON.parse(data.availability).available_bikes['12']);
-                    freebikes_at_13 = parseFloat(JSON.parse(data.availability).available_bikes['13']);
-                    freebikes_at_14 = parseFloat(JSON.parse(data.availability).available_bikes['14']);
-                    freebikes_at_15 = parseFloat(JSON.parse(data.availability).available_bikes['15']);
-                    freebikes_at_16 = parseFloat(JSON.parse(data.availability).available_bikes['16']);
-                    freebikes_at_17 = parseFloat(JSON.parse(data.availability).available_bikes['17']);
-                    freebikes_at_18 = parseFloat(JSON.parse(data.availability).available_bikes['18']);
-                    freebikes_at_19 = parseFloat(JSON.parse(data.availability).available_bikes['19']);
-                    freebikes_at_20 = parseFloat(JSON.parse(data.availability).available_bikes['20']);
-                    freebikes_at_21 = parseFloat(JSON.parse(data.availability).available_bikes['21']);
-                    freebikes_at_22 = parseFloat(JSON.parse(data.availability).available_bikes['22']);
-                    freebikes_at_23 = parseFloat(JSON.parse(data.availability).available_bikes['23']);
-                                    
+                    for (var i in hours_of_day) {
+                        var elem = [hours_of_day[i], 
+                                    parseFloat(JSON.parse(data.occupancy).available_bike_stands[hours_of_day[i]]),    parseFloat(JSON.parse(data.availability).available_bikes[hours_of_day[i]])];
+                        hourly_data_array.push(elem);
+                    }
+                    
+                    hourly3h_data_array = [['Hour', 'Available stands', 'Available bikes']];
+                
+                    hourly3h = ["00","03","06","09","12","15","18","21"];
+                
+                    for (var i in hourly3h) {
+                        var elem = [hourly3h[i], 
+                                    parseFloat(JSON.parse(data.occupancy).available_bike_stands[hourly3h[i]]),
+                                    parseFloat(JSON.parse(data.availability).available_bikes[hourly3h[i]])];
+                        hourly3h_data_array.push(elem);
+                    }
+                
                     drawChart();
                     drawChartHour();
                     drawChartHour3h()
@@ -295,16 +198,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
       //google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Weekday', 'Available stands', 'Available bikes'],
-          ['Monday',  mon_data_freestands, mon_data_freebikes],
-          ['Tuesday',  tue_data_freestands, tue_data_freebikes],
-          ['Wednesday',  wed_data_freestands, wed_data_freebikes],
-          ['Thursday',  thu_data_freestands, thu_data_freebikes],
-          ['Friday',  fri_data_freestands, fri_data_freebikes],
-          ['Saturday',  sat_data_freestands, sat_data_freebikes],
-          ['Sunday', sun_data_freestands, sun_data_freebikes]
-        ]);
+        var data = google.visualization.arrayToDataTable(weekly_data_array);
 
         var options = {
           title: 'Weekly overview',
@@ -319,33 +213,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
         
     function drawChartHour() {
 
-        var data = google.visualization.arrayToDataTable([
-          ['Hour', 'Available stands', 'Available bikes'],
-          ['00',  freestands_at_00, freebikes_at_00],
-          ['01',  freestands_at_01, freebikes_at_01],
-          ['02',  freestands_at_02, freebikes_at_02],
-          ['03',  freestands_at_03, freebikes_at_03],
-          ['04',  freestands_at_04, freebikes_at_04],
-          ['05',  freestands_at_05, freebikes_at_05],
-          ['06',  freestands_at_06, freebikes_at_06],
-          ['07',  freestands_at_07, freebikes_at_07],
-          ['08',  freestands_at_08, freebikes_at_08],
-          ['09',  freestands_at_09, freebikes_at_09],
-          ['10',  freestands_at_10, freebikes_at_10],
-          ['11',  freestands_at_11, freebikes_at_11],
-          ['12',  freestands_at_12, freebikes_at_12],
-          ['13',  freestands_at_13, freebikes_at_13],
-          ['14',  freestands_at_14, freebikes_at_14],
-          ['15',  freestands_at_15, freebikes_at_15],
-          ['16',  freestands_at_16, freebikes_at_16],
-          ['17',  freestands_at_17, freebikes_at_17],
-          ['18',  freestands_at_18, freebikes_at_18],
-          ['19',  freestands_at_19, freebikes_at_19],
-          ['20',  freestands_at_20, freebikes_at_20],
-          ['21',  freestands_at_21, freebikes_at_21],
-          ['22',  freestands_at_22, freebikes_at_22],
-          ['23',  freestands_at_23, freebikes_at_23]
-        ]);
+        var data = google.visualization.arrayToDataTable(hourly_data_array);
 
         var options = {
           title: 'Hourly overview',
@@ -360,17 +228,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
         
     function drawChartHour3h() {
 
-        var data = google.visualization.arrayToDataTable([
-          ['Hour', 'Available stands', 'Available bikes'],
-          ['00',  freestands_at_00, freebikes_at_00],
-          ['03',  freestands_at_03, freebikes_at_03],
-          ['06',  freestands_at_06, freebikes_at_06],
-          ['09',  freestands_at_09, freebikes_at_09],
-          ['12',  freestands_at_12, freebikes_at_12],
-          ['15',  freestands_at_15, freebikes_at_15],
-          ['18',  freestands_at_18, freebikes_at_18],
-          ['21',  freestands_at_21, freebikes_at_21]
-        ]);
+        var data = google.visualization.arrayToDataTable(hourly3h_data_array);
 
         var options = {
           title: '3 hour overview',
