@@ -24,7 +24,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     <form id="bikesinfo">
         
     Choose Your Station 
-    <input id="myinput" data-minchars="1"/><br><br>
+    <input id="myinput" data-minchars="1" onkeypress="return runScript(event)"/><br><br>
     <div class="slider">
   <input id="slider-toggle-4" class="slider-toggle slider-toggle-circle" type="checkbox">
   <label for="slider-toggle-4"></label>
@@ -140,6 +140,31 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                 };
         //console.log(ranks);
         awesom.list = ranks;
+    
+        function runScript(e) {
+            if (e.keyCode == 13) {
+                var tb = document.getElementById("myinput");
+                console.log(tb.value);
+                for (var i = 0; i < dbBikesData.length; i++){
+                    
+                    if (dbBikesData[i]['name'].toUpperCase() == tb.value) {
+                        update_values(dbBikesData[i]['number']);
+                        var marker = new google.maps.Marker({
+                        position: {
+                            lat: dbBikesData[i]['position']['lat'],
+                            lng: dbBikesData[i]['position']['lng']
+                        },
+                        map: map,
+                        icon: "{{url_for('static', filename='arrow.png')}}"
+                    }); 
+                    
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+
+                    }
+                    };
+                return false;
+            }
+        }
 
 </script>    
   
