@@ -249,7 +249,22 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
                 
                     drawChart();
                     drawChartHour();
-                    drawChartHour3h()
+                    drawChartHour3h();
+                    
+                    var nameOfStation;
+                    var availableBikes;
+                    var availableStands;
+                
+                    for (var i = 0; i < dbBikesData.length;i++) {
+                        if (truc == dbBikesData[i]['number']) {
+                            nameOfStation = dbBikesData[i]['address'];
+                            availableBikes = dbBikesData[i]['available_bikes'];
+                            availableStands = dbBikesData[i]['available_bike_stands'];
+                        }
+                    }
+                    document.getElementById("text-box").innerHTML = nameOfStation + 
+                                                                    "<br>Available bikes: " + availableBikes + 
+                                                                    "<br>Available stands: " + availableStands;
                 
                 });
         }
@@ -257,6 +272,7 @@ google.maps.event.addDomListener(window, 'load', initializeMap);
     
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <div id="text-box"></div>
     <div id="curve_chart"></div>
     <div id="curve_chart_hour"></div>
     <div id="curve_chart_hour3h"></div>
