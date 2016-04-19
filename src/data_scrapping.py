@@ -6,11 +6,13 @@ import traceback
 
 
 def writedata(data, sql_file_name):
+        '''write data to database'''
         f = open(sql_file_name, 'w')
         with f:
             f.write(data)
 
 def neatify_coord(string):
+    '''trim input from the dublin bikes json'''
     neat_string = ""
     
     for i in range(len(string)):
@@ -34,6 +36,7 @@ def neatify_coord(string):
     return neat_string
     
 def launch_database():
+    '''lauches the database'''
     master_db = lite.connect('dbike_masterDB_test.db')
     
     contract = "dublin"
@@ -44,6 +47,7 @@ def launch_database():
         
         try:
             
+            '''get data from jcdecaux'''
             json_file = requests.get(stations, params={"apiKey": apikey, "contract" : contract})
             parsed_json_file = json.loads(json_file.text)
             
@@ -52,15 +56,17 @@ def launch_database():
             json__current_data.close()
 
             with master_db:
-
+                '''open database connection'''
                 cursor_db = master_db.cursor()
                 
                 try:
+                    '''if table doesn't yet exist, creates it'''
                     cursor_db.execute('CREATE TABLE dbbikes_data(number INT, name TEXT, address TEXT, latitude REAL, longitude REAL, banking INT, bonus INT, status TEXT, contract_name TEXT, bike_stands INT, available_bike_stands INT, available_bikes INT, last_update INT)')
                 except lite.OperationalError as e:
                         if e == "table Test dbbikes_data exists":
                             pass
                 
+                '''adds fected data to database'''
                 for line in range(len(parsed_json_file)):
                     number = parsed_json_file[line]['number']
                     number = int(number)
@@ -88,6 +94,8 @@ def launch_database():
                     last_update = int(last_update)
                     cursor_db.execute("INSERT INTO dbbikes_data VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)" , (number, name, address, latitude, longitude, banking, bonus, status, contract_name, bike_stands, available_bike_stands, available_bikes, last_update))
             
+            '''transforms sqlite database to sql database'''
+            '''we didn't actually used it - we created for convenience'''
             writedata('\n'.join(master_db.iterdump()), 'Test_masterdb.sql')
             sleep(60 * 5)
     
