@@ -22,12 +22,14 @@ Open a terminal and cd to the directory where you have extracted the files. Then
 if your default Python is Python 3:
 
 ```bash
-python src/app.py
+cd src
+python app.py
 ```
 or, if your default Python is Python 2:
 
 ```bash
-python3 src/app.py
+cd src
+python3 app.py
 ```
 
 Using your favorite browser, please visit 127.0.0.1:5000 to see the website.
@@ -37,7 +39,7 @@ Technical notes
 
 Our Git repositories is available at: https://git.ucd.ie/Pauline/dublin-bikes-group-project
 
-The test folder contains some test to make sure our program behaves correctly
+The test folder contains some tests to make sure our program behaves correctly
 
 data_scrapping.py is the program querying the JCDecaux website, and update the database. You should not need to launch it to use our website.
 
