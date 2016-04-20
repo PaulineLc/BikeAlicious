@@ -153,15 +153,15 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     }
 
     // Sets the map on all markers in the array.
-    function setMapOnAll(map) {
-      for (var i = 0; i < markers.length; i++) {
-        markers[i].setMap(map);
+    function setMapOnAll(map,myArray) {
+      for (var i = 0; i < myArray.length; i++) {
+        myArray[i].setMap(map);
       }
     }
 
     // Removes the markers from the map, but keeps them in the array.
-    function clearMarkers() {
-      setMapOnAll(null);
+    function clearMarkers(myArray) {
+      setMapOnAll(null,myArray);
     }
 
     
@@ -178,12 +178,13 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     awesom.list = ranks;
     
     //interaction between awesomeplete and the map
+    arrow = []
     function runScript(e) {
         if (e.keyCode == 13) {
+            clearMarkers(arrow);
             var tb = document.getElementById("myinput");
             console.log(tb.value);
             for (var i = 0; i < dbBikesData.length; i++){
-
                 if (dbBikesData[i]['name'].toUpperCase() == tb.value) {
                     //show graphs + information
                     update_values(dbBikesData[i]['number']);
@@ -196,7 +197,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
                     map: map,
                     icon: "{{url_for('static', filename='arrow.png')}}"
                 }); 
-
+                arrow.push(marker);
                 marker.setAnimation(google.maps.Animation.BOUNCE);
 
                 }
@@ -209,11 +210,11 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     function defineMarkerColors() {
         if (document.getElementById("slider-toggle-4").checked) {
             console.log("checked!");
-            clearMarkers();
+            clearMarkers(markers);
             displayMarker(true);
         } else {
             console.log("not checked");
-            clearMarkers();
+            clearMarkers(markers);
             displayMarker(false);
         }
     }
