@@ -6,51 +6,48 @@
      <link rel = stylesheet type = "text/css"
     href = "{{ url_for('static', filename='stylesheets/dublinbikes.css') }}">
     
-<!--for local machine, use href = "dublinbikes.css">-->
-    
     <!--link to awesomplete stylesheet for autocomplete function-->
-    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/awesomplete.css')}}" />
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/awesomplete.css')}}"/>
+
+    <!--script for awesomplete location box-->
     <script src="{{url_for('static', filename='awesomplete.js')}}" async></script>
-    <script
-src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjYp9QUOCs&libraries=places">
-</script> 
+    
+    <!--script for Google maps-->
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjYp9QUOCs&libraries=places">
+    </script> 
 </head>
     
 <body>
-    <header>Dublin Bikes</header>
+
+<header>Dublin Bikes</header>
+
 <!-- div where the user input form will be displayed-->
 <div id="userinput">
     <form id="bikesinfo">
-        
-    Choose Your Station 
-    <input id="myinput" data-minchars="1" onkeypress="return runScript(event)"/><br><br>
-    <div class="slider">
-<!-- Fancy slider-->
-  <input id="slider-toggle-4" class="slider-toggle slider-toggle-circle" type="checkbox" onclick="defineMarkerColors()">
-  <label for="slider-toggle-4"></label>
-</div>
-
-<!--
-    <div class="dropdown">
-        <button class="dropbtn">I Want To</button>
-  <div id="myDropdown" class="dropdown-content">
-    <a href="">Get Bike</a>
-    <a href="">Return Bike</a>
-  </div>
-</div>
--->
+        <ul><li>
+                Choose Your Station 
+                <input id="myinput" data-minchars="1" onkeypress="return runScript(event)"/>
+            </li>
+            <li>Get Bike</li>
+            <li>
+                <!--iOs style slider button-->
+                <input id="slider-toggle-4" class="slider-toggle slider-toggle-circle" type="checkbox" onclick="defineMarkerColors()">
+                <label for="slider-toggle-4"></label>
+            </li>
+            <li>Return Bike</li>
+        </ul>
     </form>
 </div>  
-    
- <div id="stationmap"></div>   
 
+<!--div where the Google map will be displayed-->
+<div id="stationmap"></div>   
     
     
 <script>
     
-    //display map
-    var map;
+//display map
+var map;
+    
     function initializeMap() {
         //function to create google map 
         var mapProp = {
@@ -60,26 +57,21 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         };
         //create map object
         map=new google.maps.Map(document.getElementById("stationmap"), mapProp);
-
+        //call function to display markers
         displayMarker(false);
 
-    //  var contentString = ;    
-
-    //  var infowindow = new google.maps.InfoWindow({
-    //    content: contentString
-    //  });
     }
     
-    google.maps.event.addDomListener(window, 'load', initializeMap);
+//open the map on page load   
+google.maps.event.addDomListener(window, 'load', initializeMap);
     
-    //save the JSON file to a variable
-    myJsonFile ="{{ url_for('static', filename='json_current_data.json') }}";
-        
-    var dbBikesData = readTextFile(myJsonFile);
+//save the JSON file to a variable
+myJsonFile = "{{ url_for('static', filename='json_current_data.json') }}";
+var dbBikesData = readTextFile(myJsonFile);
     
-    //function which reads the text file containing the latest dublin bikes data
+    
     function readTextFile(file){
-        
+    //function which reads the text file containing the latest dublin bikes data    
         var rawFile = new XMLHttpRequest();
         rawFile.open("GET", file, false);
         var JsonResponse;
@@ -99,8 +91,8 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         return JsonResponse;
     }
 
-    //parse json file
     function parseJson(response) {
+    //function which parses the json file
         var jsonResponse = JSON.parse(response);
         return jsonResponse;
     }
@@ -108,9 +100,11 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     //initialize marker array
     markers = []
     
-    //define the color of the marker
+
     function defineMarker(bikes, stands,sliderChecked) {
+    //function which defines the color of the marker, depending on the occupancy of the station
         if (sliderChecked) {
+            //sliderChecked shows the user the number of available bikes at each station
             if (bikes/stands <= 0.3) {
                 return "{{url_for('static', filename='greentriangle.png')}}"
             } else if (bikes/stands <= 0.6) {
@@ -119,6 +113,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
                 return "{{url_for('static', filename='redtriangle.png')}}"
             }
         } else {
+            //slider not checked shows the user the number of empty bike stands at each station
             if (bikes/stands >= 0.7) {
                 return "{{url_for('static', filename='greentriangle.png')}}"
             } else if (bikes/stands >= 0.4) {
@@ -129,9 +124,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         }
     }
     
-    //add markers to the map
+    
     function displayMarker(sliderChecked){
-        //function which displays markers for each station
+        //function which displays markers on the map for each station
         for (var i = 0; i<dbBikesData.length; i++){
             var marker = new google.maps.Marker({
                 position: {
@@ -152,20 +147,22 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         }
     }
 
-    // Sets the map on all markers in the array.
+    
     function setMapOnAll(map,myArray) {
+    // function which sets the map on all markers in the array.
       for (var i = 0; i < myArray.length; i++) {
         myArray[i].setMap(map);
       }
     }
 
-    // Removes the markers from the map, but keeps them in the array.
+    
     function clearMarkers(myArray) {
+    // function which removes the markers from the map, but keeps them in the array.
       setMapOnAll(null,myArray);
     }
 
     
-    //Awesomeplete code below
+    //Awesomeplete code begins below:
     var input = document.getElementById("myinput");
     //create new awesomplete 
     var awesom = new Awesomplete(input)
@@ -174,12 +171,13 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     for (var i = 0; i < dbBikesData.length; i++){
              ranks+= dbBikesData[i]['name'] + ","
             };
-    //console.log(ranks);
+    //add all stations to the awesomplete list
     awesom.list = ranks;
     
     //interaction between awesomeplete and the map
     arrow = []
     function runScript(e) {
+    //function which adds an arrow to point at the selected station
         if (e.keyCode == 13) {
             clearMarkers(arrow);
             var tb = document.getElementById("myinput");
@@ -206,8 +204,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         }
     }
     
-    //toggle between showing % of available bikes and % of available stands
+    
     function defineMarkerColors() {
+    //function which toggles between showing % of available bikes and % of available stands
         if (document.getElementById("slider-toggle-4").checked) {
             console.log("checked!");
             clearMarkers(markers);
@@ -228,8 +227,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     var hourly_data_array;
     var hourly_data_array;
     
-    //function that updates the web page: show selected station data, displays all the graphs
+    
     function update_values(truc) {
+    //function which updates the web page: shows selected station data and displays all the graphs
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             $.getJSON($SCRIPT_ROOT+"/_station/"+truc,
                 function(data) {
@@ -267,6 +267,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
                     drawChart();
                     drawChartHour();
                     drawChartHour3h();
+                    document.getElementById('wrapper').style.backgroundColor = 'rgba(255,255,255,0.6)';
                     
                     var nameOfStation;
                     var availableBikes;
@@ -279,9 +280,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
                             availableStands = dbBikesData[i]['available_bike_stands'];
                         }
                     }
-                    document.getElementById("text-box").innerHTML = nameOfStation + 
-                                                                    "<br>Available bikes: " + availableBikes + 
-                                                                    "<br>Available stands: " + availableStands;
+                    document.getElementById("text-box").innerHTML = "<h3>"+nameOfStation + "</h3><br>Available bikes: " + availableBikes + "<br>Available stands: " + availableStands;
                 
                 });
         }
@@ -290,19 +289,21 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
 </script>
     
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    
+    <!--divs which contain the occupancy graphs-->
+    <div id ="wrapper">
     <div id="text-box"></div>
     <div id="curve_chart"></div>
     <div id="curve_chart_hour"></div>
     <div id="curve_chart_hour3h"></div>
+    </div>
     
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
       google.charts.load('current', {'packages':['corechart']});
-      //google.charts.setOnLoadCallback(drawChart);
         
-        //first graph
+        
         function drawChart() {
+        //creates weekly overview graph
         var data = google.visualization.arrayToDataTable(weekly_data_array);
 
         var options = {
@@ -316,9 +317,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         chart.draw(data, options);
       }
         
-    //second graph
+    
     function drawChartHour() {
-
+    //creates hourly overview graph
         var data = google.visualization.arrayToDataTable(hourly_data_array);
 
         var options = {
@@ -332,9 +333,9 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
         chart.draw(data, options);
       }
     
-    //last graph
+    
     function drawChartHour3h() {
-
+    //creates graph with three hour information
         var data = google.visualization.arrayToDataTable(hourly3h_data_array);
 
         var options = {
@@ -352,7 +353,7 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBbXrgdjjw09bdTxFQZlENHvTjY
     </script>
     
 <footer><br>
-    WOLD Enterprises
+    Copyright WOLD, 2016
 </footer>    
 </body>
 

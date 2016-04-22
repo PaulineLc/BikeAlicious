@@ -2,30 +2,33 @@ body{
     font-size: 20px;
     color: cadetblue;
     font-weight: 700;
+    background: url(Coca-Cola-Zero-dublinbikes-Launch-270614-40-1024x630.jpg) center center fixed no-repeat;
+    background-size: cover;
 }
 
 header{
     color: cadetblue;
     text-align: center;
     text-shadow: 2px 2px 8px white;
-    height: 380px;
+    height: 280px;
     font-size: 150px;
     margin-bottom: 20px;
-    margin-bottom: 40px;
-    background-image: url(dsc_3050m.jpg);
     background-repeat: no-repeat;
-    background-position: center;
-    
+    background-position: center;   
 }
 
 #userinput{
-    width: 45%;
+/*div containing the user input form*/
+    width: 70%;
+    height: 130px;
     padding: 20px;
-    margin-left: auto;
     margin-right: auto;
-    margin-bottom: 100px;
-    z-index: -1;
-    float: left;
+    margin-left: auto;
+    margin-bottom: 40px;
+    font-size: 20px;
+    text-align: center;
+    background-color: aliceblue;
+    border-radius: 60px;
 }
 
 
@@ -40,60 +43,14 @@ header{
 
 
 #stationmap{
-    height: 480px;
-    width: 600px;
-    margin: auto;
-/*    margin-top: 50px;*/
-    
+/*div containing the Google map*/
+    height: 580px;
+    width: 75%;
+    margin: auto; 
 }
 
 
-/*Classes etc. adapted from http://www.w3schools.com/howto/howto_css_dropdown.asp*/
-.dropbtn {
-    background-color: cadetblue;
-    color: white;
-    padding: 15px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-    
-}
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: white;
-    color: cadetblue;
-    border: 1px solid cadetblue;
-    
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: cadetblue;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 5px 10px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown a:hover {background-color: #f1f1f1}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-
-
+/*Styling for the iOS-style slider button adapted from http://callmenick.com/post/css-toggle-switch-examples*/
 
 .slider-toggle {
   position: absolute;
@@ -112,7 +69,7 @@ header{
 input.slider-toggle-circle + label {
   padding: 2px;
   width: 120px;
-  height: 60px;
+  height: 30px;
   background-color: #dddddd;
   border-radius: 60px;
   transition: background 0.4s;
@@ -134,6 +91,7 @@ input.slider-toggle-circle + label:before {
   border-radius: 60px;
   transition: background 0.4s;
 }
+
 input.slider-toggle-circle + label:after {
   top: 4px;
   left: 4px;
@@ -153,10 +111,58 @@ input.slider-toggle-circle:checked + label:after {
   background-color: dodgerblue;
 }
 
-footer{
-    margin-top: 20px;
+
+/*GRAPH SECTION*/
+
+#wrapper{
+    /*div which contains the print-out of name and occupancy levels of a station*/
+    background-color: rgba(255,255,255,0.0);
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 40px;
+}
+
+#text-box{
+/*contains name and availability at selected stations*/
     text-align: center;
-    background-color: cadetblue;
-    color: white;
-    height: 50px;
+    margin-top: 30px;
+    width: 70%;
+    color: black;
+    text-shadow: 2px 2px 8px cadetblue;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+#text-box h3{
+    font-size: 30px;
+}
+
+#curve_chart{
+/*weekly overview graph*/
+    width:45%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+}
+
+#curve_chart_hour{
+/*hourly overview graph*/
+    width: 45%;
+    float: right;
+}
+
+#curve_chart_hour3h{
+/*3hour overview graph*/
+    width: 45%;
+}
+
+
+footer{
+    margin-top: 50px;
+    text-align: center;
+    text-shadow: 2px 2px 8px white;
+    color: cadetblue;
+    height: 70px;
+    font-size: 30px;
 }
