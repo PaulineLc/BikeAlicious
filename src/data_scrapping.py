@@ -104,4 +104,5 @@ def launch_database():
             print(traceback.format_exc())
             sleep(5)
 
-launch_database()
+#uncomment the below to run the database
+#launch_database()
